@@ -1,4 +1,4 @@
-package com.iodev.myapplication
+package com.iodev.myapplication.model
 
 data class NewsReponse(
     val articles: List<Article>,

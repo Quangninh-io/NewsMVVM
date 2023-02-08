@@ -1,6 +1,6 @@
 package com.iodev.myapplication.api
 
-import com.iodev.myapplication.NewsReponse
+import com.iodev.myapplication.model.NewsReponse
 import com.iodev.myapplication.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET

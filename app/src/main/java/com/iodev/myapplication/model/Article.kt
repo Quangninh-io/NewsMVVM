@@ -1,4 +1,4 @@
-package com.iodev.myapplication
+package com.iodev.myapplication.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
