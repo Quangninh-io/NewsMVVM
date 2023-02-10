@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iodev.myapplication.R
 import com.iodev.myapplication.model.Article
+import com.iodev.myapplication.util.Resource
 import kotlinx.android.synthetic.main.item_article_preview.view.*
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
+class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 

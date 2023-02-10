@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.iodev.myapplication.repository.NewsRepository
 
-class NewsViewModelProvideFactory(
+class NewsViewModelProviderFactory(
     val newsRepository: NewsRepository
 ) : ViewModelProvider.Factory {
 
