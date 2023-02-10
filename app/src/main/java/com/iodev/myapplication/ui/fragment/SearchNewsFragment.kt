@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iodev.myapplication.R
 import com.iodev.myapplication.adapter.NewsAdapter
@@ -34,7 +35,20 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
 
         setupRecyclerView()
-
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putString("content", it.content)
+                putString("description", it.description)
+                putString("publishedAt", it.publishedAt)
+                putString("title", it.title)
+                putString("url", it.url)
+                putString("urlToImage", it.urlToImage)
+            }
+            findNavController().navigate(
+                R.id.action_saveNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
         var job: Job? = null
         etSearch.addTextChangedListener { editable ->
             job?.cancel()

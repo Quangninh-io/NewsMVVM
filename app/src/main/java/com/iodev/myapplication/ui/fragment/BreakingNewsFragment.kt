@@ -2,12 +2,17 @@ package com.iodev.myapplication.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.iodev.myapplication.R
 import com.iodev.myapplication.adapter.NewsAdapter
 import com.iodev.myapplication.db.ArticleDatabase
@@ -26,10 +31,27 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val newsRepository = activity?.let { NewsRepository(ArticleDatabase(it)) }
-        val viewModelProviderFactory =NewsViewModelProviderFactory(newsRepository!!)
-        viewModel = ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
+        val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository!!)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
         setupRecyclerView()
-        if (::viewModel.isInitialized){
+
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putString("content", it.content)
+                putString("description", it.description)
+                putString("publishedAt", it.publishedAt)
+                putString("title", it.title)
+                putString("url", it.url)
+                putString("urlToImage", it.urlToImage)
+            }
+
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
+
+        if (::viewModel.isInitialized) {
             viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
                 when (response) {
                     is Resource.Success -> {
@@ -49,8 +71,8 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                     }
                 }
             })
-        }else{
-            Toast.makeText(activity,"view model not installed", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(activity, "view model not installed", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -62,6 +84,22 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         paginationProgressBar.visibility = View.VISIBLE
     }
 
+    var isLoading = false
+    var isLastPage = false
+    var isScrolling = false
+    val scrollListener = object : RecyclerView.OnScrollListener(){
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
+            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+        }
+    }
+
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
         rvBreakingNews.apply {
@@ -69,6 +107,5 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             layoutManager = LinearLayoutManager(activity)
         }
     }
-
 
 }
