@@ -19,8 +19,11 @@ import com.iodev.myapplication.db.ArticleDatabase
 import com.iodev.myapplication.repository.NewsRepository
 import com.iodev.myapplication.ui.NewsViewModel
 import com.iodev.myapplication.ui.NewsViewModelProviderFactory
+import com.iodev.myapplication.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.iodev.myapplication.util.Resource
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
+import kotlinx.android.synthetic.main.fragment_breaking_news.paginationProgressBar
+import kotlinx.android.synthetic.main.fragment_search_news.*
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
@@ -31,18 +34,13 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val newsRepository = activity?.let { NewsRepository(ArticleDatabase(it)) }
-        val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository!!)
+        val viewModelProviderFactory = NewsViewModelProviderFactory(requireActivity().application,newsRepository!!)
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
         setupRecyclerView()
 
         newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putString("content", it.content)
-                putString("description", it.description)
-                putString("publishedAt", it.publishedAt)
-                putString("title", it.title)
-                putString("url", it.url)
-                putString("urlToImage", it.urlToImage)
+                putSerializable("article",it)
             }
 
             findNavController().navigate(
@@ -84,28 +82,14 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         paginationProgressBar.visibility = View.VISIBLE
     }
 
-    var isLoading = false
-    var isLastPage = false
-    var isScrolling = false
-    val scrollListener = object : RecyclerView.OnScrollListener(){
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
-
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-        }
-    }
-
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
         rvBreakingNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
+
         }
     }
+
 
 }

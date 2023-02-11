@@ -44,29 +44,9 @@
         android:id="@+id/articleFragment"
         android:name="com.iodev.myapplication.ui.fragment.ArticleFragment"
         android:label="ArticleFragment">
-        <argument
-            android:name="content"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            app:argType="string" />
 
         <argument
-            android:name="publishedAt"
-            app:argType="string" />
-
-        <argument
-            android:name="title"
-            app:argType="string" />
-
-        <argument
-            android:name="url"
-            app:argType="string" />
-
-        <argument
-            android:name="urlToImage"
-            app:argType="string" />
-
-
+            android:name="article"
+            app:argType="com.iodev.myapplication.model.Article" />
     </fragment>
 </navigation>

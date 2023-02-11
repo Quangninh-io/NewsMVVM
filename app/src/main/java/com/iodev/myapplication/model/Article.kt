@@ -12,12 +12,12 @@ import java.io.Serializable
 data class Article(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
-    val author: String,
-    var content: String,
-    var description: String,
-    var publishedAt: String,
-    var source: Source,
-    var title: String,
-    var url: String,
-    var urlToImage: String
+    val author: String?,
+    var content: String?,
+    var description: String?,
+    var publishedAt: String?,
+    var source: Source?,
+    var title: String?,
+    var url: String?,
+    var urlToImage: String?
 ):Serializable

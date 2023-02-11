@@ -25,23 +25,14 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         super.onViewCreated(view, savedInstanceState)
 
         val newsRepository = activity?.let { NewsRepository(ArticleDatabase(it)) }
-        val viewModelProviderFactory = NewsViewModelProviderFactory(newsRepository!!)
+
+        val viewModelProviderFactory = NewsViewModelProviderFactory(requireActivity().application,newsRepository!!)
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
-        val article: Article = Article(
-            null,
-            "",
-            args.content,
-            args.description,
-            args.publishedAt,
-            Source("", ""),
-            args.title,
-            args.url,
-            args.urlToImage,
-        )
+        val article: Article =  args.article
 
         webView.apply {
             webViewClient = WebViewClient()
-            loadUrl(article.url)
+            article.url?.let { loadUrl(it) }
         }
 
         fab.setOnClickListener {
